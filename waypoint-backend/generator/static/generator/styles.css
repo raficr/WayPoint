@@ -1,0 +1,335 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;900&display=swap');
+
+/* Reset Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Background Image */
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  font-family: 'Raleway', sans-serif;
+  background: url("/static/generator/images_backend/main-pic.jpg") no-repeat center center fixed;
+  background-size: cover;
+  background-position: center center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-y: auto; /* Enable scrolling */
+  scroll-behavior: smooth;
+}
+
+/* Hero Section */
+.hero {
+  width: 100%;
+  text-align: center;
+  padding: 120px 20px;
+  background: rgba(30, 30, 50, 0.9);
+  backdrop-filter: blur(5px);
+  border-bottom: 3px solid rgba(0, 180, 255, 0.7);
+  box-shadow: 0px 5px 20px rgba(0, 180, 255, 0.5);
+  position: relative;
+  z-index: 10;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Sharp & Clear Title */
+.hero h1 {
+  font-size: 4rem;
+  font-weight: 900;
+  color: #00ccff;
+  text-shadow: 0px 0px 15px rgba(0, 180, 255, 1);
+  animation: fadeInGlow 2s infinite alternate, slideDown 1.2s ease-in-out;
+}
+
+/* Sharp & Clear Subtitle */
+.hero p {
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin-top: 10px;
+  text-shadow: 0px 0px 10px rgba(0, 180, 255, 0.7);
+  font-weight: bold;
+  animation: fadeIn 2s ease-in-out, slideUp 1.5s ease-in-out;
+}
+
+/* Generator Form */
+.generator {
+  background: rgba(30, 30, 50, 0.85);
+  padding: 50px;
+  border-radius: 25px;
+  width: 650px;
+  text-align: center;
+  backdrop-filter: blur(15px);
+  border: 3px solid rgba(0, 180, 255, 0.7);
+  box-shadow: 0px 0px 50px rgba(0, 180, 255, 1);
+  position: relative;
+  z-index: 5;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Bigger & Better "Holiday Generator" Title */
+.generator h2 {
+  font-size: 2.2rem; /* Increase size */
+  color: #ffcc00; /* New golden color */
+  font-weight: bold;
+  text-shadow: 0px 0px 20px rgba(255, 200, 50, 1);
+  margin-bottom: 20px; /* Add more spacing */
+}
+
+/* Improve form text visibility */
+.generator label {
+  color: #ffffff !important;
+  font-weight: bold;
+  text-shadow: 0px 0px 10px rgba(0, 180, 255, 1);
+}
+
+/* Dropdowns */
+.generator select {
+  width: 100%;
+  padding: 15px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white !important;
+  font-size: 18px;
+  text-align: center;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  margin-bottom: 15px;
+}
+
+.generator select option {
+  background-color: black !important;
+  color: white !important;
+}
+
+/* Bigger & More Stylish "Generate Holiday Ideas" Button */
+.generator button {
+  width: 100%;
+  padding: 22px;
+  border-radius: 15px;
+  border: none;
+  background: linear-gradient(145deg, #ff8c00, #ffcc00);
+  color: white;
+  font-size: 26px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  margin-top: 15px;
+  text-transform: uppercase;
+  box-shadow: 0px 0px 25px rgba(255, 200, 50, 1);
+}
+
+.generator button:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 0px 50px rgba(255, 200, 50, 1);
+  background: linear-gradient(145deg, #ffcc00, #ff8c00);
+}
+
+/* Result Box */
+.result {
+  max-width: 100%;
+  text-align: center;
+  overflow: hidden;
+  margin-top: 30px;
+  background: rgba(30, 30, 50, 0.85);
+  padding: 25px;
+  border-radius: 20px;
+  border: 3px solid rgba(0, 180, 255, 0.7);
+  box-shadow: 0px 0px 50px rgba(0, 180, 255, 1);
+}
+
+/* Description Box for the country description */
+.description-box {
+  margin-top: 20px;
+  padding: 20px;
+  background: rgba(0, 180, 255, 0.85);  /* Blue background with transparency */
+  border-radius: 12px;
+  box-shadow: 0px 0px 20px rgba(0, 180, 255, 0.7);
+  color: black;  /* Set text color to black */
+  font-size: 1.2rem;
+  text-align: left;
+  max-width: 180%;  /* Adjust width to be more like a rectangle */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.description-box p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgb(0, 0, 0);
+}
+
+/* Styling the "Ask More Details" Section */
+.ask-more {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(30, 30, 50, 0.85);
+  border-radius: 12px;
+  box-shadow: 0px 0px 20px rgba(0, 180, 255, 0.7);
+  text-align: left;
+  width: 100%;
+  max-width: 650px;
+  margin: auto;
+}
+
+.ask-more label {
+  color: white;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.ask-more input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 16px;
+  border: 2px solid rgba(0, 180, 255, 0.7);
+}
+
+.ask-more button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 12px;
+  background-color: #00ccff;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.ask-more button:hover {
+  background-color: #ffcc00;
+  box-shadow: 0px 0px 20px rgba(0, 180, 255, 0.7);
+}
+
+/* Response Section for more details */
+#more-details-response {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(0, 180, 255, 0.85);
+  border-radius: 12px;
+  color: black;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.result h3 {
+  color: #ffcc00; /* Change this to any color you prefer */
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-shadow: 0px 0px 10px rgba(255, 200, 50, 1);
+}
+
+
+
+.holiday-image {
+  max-width: 90%;
+  max-height: 400px;
+  border-radius: 15px;
+  margin-top: 20px;
+  box-shadow: 0px 0px 20px rgba(0, 180, 255, 0.7);
+}
+
+/* Fix Scrolling Issue */
+body {
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Fix Header Cutoff After Scrolling */
+.hero {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+/* Styling for the generated output box */
+.output-box {
+  max-width: 100%;
+  text-align: center;
+  margin-top: 30px;
+  background: rgba(30, 30, 50, 0.85);
+  padding: 25px;
+  border-radius: 20px;
+  border: 3px solid rgba(0, 180, 255, 0.7);
+  box-shadow: 0px 0px 50px rgba(0, 180, 255, 1);
+}
+
+.output-box h3 {
+  font-size: 1.8rem;
+  color: #ffcc00;
+  font-weight: bold;
+  text-shadow: 0px 0px 10px rgba(255, 200, 50, 1);
+}
+
+.output-box p {
+  font-size: 1.2rem;
+  color: #ffffff;
+  line-height: 1.6;
+}
+
+/* Text-to-Speech Controls */
+.text-to-speech-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.text-to-speech-controls button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background-color: #00ccff;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.text-to-speech-controls button:hover {
+  background-color: #ffcc00;
+  transform: scale(1.1);
+}
+
+.text-to-speech-controls button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeInGlow {
+  from { text-shadow: 0px 0px 10px rgba(0, 180, 255, 1); }
+  to { text-shadow: 0px 0px 25px rgba(0, 180, 255, 1); }
+}

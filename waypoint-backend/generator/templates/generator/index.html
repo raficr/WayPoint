@@ -1,0 +1,230 @@
+<!-- venv\Scripts\activate -->
+<!-- Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -->
+<!-- npm start -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Traveling</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'generator/styles.css' %}?v=8">
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Start Your Adventure</h1>
+        <p>Tell us your preferences, and we'll find your perfect holiday!</p>
+    </section>
+
+    <!-- Holiday Generator Form -->
+    <section class="generator">
+        <h2>Holiday Generator</h2>
+        <form method="POST" action="{% url 'generate_holiday' %}">
+            {% csrf_token %}
+            
+            <label for="climate">Choose Climate</label>
+            <select name="climate" id="climate" required>
+                <option value="" disabled selected>Select an option</option>
+                <option value="warm">Warm</option>
+                <option value="cold">Cold</option>
+                <option value="mild">Mild</option>
+            </select>
+
+            <label for="destination">Beaches or Mountains?</label>
+            <select name="destination" id="destination" required>
+                <option value="" disabled selected>Select an option</option>
+                <option value="beaches">Beaches</option>
+                <option value="mountains">Mountains</option>
+                <option value="both">Both</option>
+            </select>
+
+            <label for="budget">Budget Range</label>
+            <select name="budget" id="budget" required>
+                <option value="" disabled selected>Select an option</option>
+                <option value="low">Budget Friendly</option>
+                <option value="medium">Moderate</option>
+                <option value="high">Luxury</option>
+            </select>
+
+            <label for="activity">Preferred Activities</label>
+            <select name="activity" id="activity" required>
+                <option value="" disabled selected>Select an option</option>
+                <option value="adventure">Adventure</option>
+                <option value="relaxation">Relaxation</option>
+                <option value="culture">Cultural Exploration</option>
+            </select>
+
+            <button type="submit">Generate Holiday Ideas</button>
+        </form>
+
+        {% if country %}
+        <div class="result">
+            <h3>Your Perfect Holiday Destination: {{ country }}</h3>
+            <img src="{{ image_url }}" alt="Generated image of {{ country }}" class="holiday-image">
+            <div class="description-box">
+                <p id="generated-text">{{ country_description }}</p>
+            </div>
+
+            <div class="text-to-speech-controls">
+                <button type="button" id="play-button">Play</button>
+                <button type="button" id="stop-button" disabled>Stop</button>
+                <button type="button" id="restart-button" disabled>Restart</button>
+            </div>
+
+            <div class="ask-more">
+                <label for="more-details">Ask about more details:</label>
+                <input type="text" id="more-details" name="more_details" placeholder="e.g., What is the best time of the year to visit {{ country }}?" required>
+                <button type="button" id="get-more-info">Get More Info</button>
+            </div>
+
+            <div id="more-info-response" class="more-details-response" style="display: none;">
+                <h3>Additional Information:</h3>
+                <p id="additional-info"></p>
+            </div>
+        </div>
+        {% endif %}
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const playButton = document.getElementById("play-button");
+            const stopButton = document.getElementById("stop-button");
+            const restartButton = document.getElementById("restart-button");
+            const generatedTextElement = document.getElementById("generated-text");
+
+            if (!generatedTextElement) {
+                console.error("Generated text element not found");
+                return;
+            }
+
+            let generatedText = generatedTextElement.innerText;
+            let speechQueue = [];
+            let isPaused = false;
+            let currentUtteranceIndex = 0;
+            let voicesLoaded = false;
+
+            function setVoice() {
+                let voices = window.speechSynthesis.getVoices();
+                if (voices.length > 0) {
+                    let selectedVoice = voices.find(voice => voice.name.includes("UK")) || voices[0];
+                    speechQueue.forEach(speech => speech.voice = selectedVoice);
+                    voicesLoaded = true;
+                }
+            }
+
+            // Ensure voices are loaded before using speech synthesis
+            window.speechSynthesis.onvoiceschanged = setVoice;
+            setVoice();
+
+            // Split text into chunks
+            function splitTextIntoChunks(text, chunkSize = 200) {
+                let chunks = [];
+                let words = text.split(" ");
+                for (let i = 0; i < words.length; i += chunkSize) {
+                    chunks.push(words.slice(i, i + chunkSize).join(" "));
+                }
+                return chunks;
+            }
+
+            function createSpeechQueue(text) {
+                let chunks = splitTextIntoChunks(text);
+                speechQueue = chunks.map(chunk => {
+                    let speech = new SpeechSynthesisUtterance(chunk);
+                    speech.rate = 0.9;
+                    speech.pitch = 1.2;
+                    speech.onend = handleSpeechEnd;
+                    return speech;
+                });
+            }
+
+            function handleSpeechEnd() {
+                if (currentUtteranceIndex < speechQueue.length - 1) {
+                    currentUtteranceIndex++;
+                    window.speechSynthesis.speak(speechQueue[currentUtteranceIndex]);
+                } else {
+                    isPaused = false;
+                    currentUtteranceIndex = 0;
+                    playButton.disabled = false;
+                    stopButton.disabled = true;
+                    restartButton.disabled = true;
+                }
+            }
+
+            createSpeechQueue(generatedText);
+
+            playButton.addEventListener("click", function () {
+                if (!voicesLoaded) {
+                    console.error("Voices not loaded yet. Try again.");
+                    return;
+                }
+
+                if (isPaused) {
+                    window.speechSynthesis.resume();
+                } else {
+                    window.speechSynthesis.speak(speechQueue[currentUtteranceIndex]);
+                }
+                isPaused = false;
+                playButton.disabled = true;
+                stopButton.disabled = false;
+                restartButton.disabled = false;
+            });
+
+            stopButton.addEventListener("click", function () {
+                if (window.speechSynthesis.speaking) {
+                    window.speechSynthesis.cancel();
+                    isPaused = true;
+                    playButton.disabled = false;
+                    stopButton.disabled = true;
+                    restartButton.disabled = false;
+                }
+            });
+
+            restartButton.addEventListener("click", function () {
+                window.speechSynthesis.cancel();
+                isPaused = false;
+                currentUtteranceIndex = 0;
+                window.speechSynthesis.speak(speechQueue[currentUtteranceIndex]);
+                playButton.disabled = true;
+                stopButton.disabled = false;
+                restartButton.disabled = false;
+            });
+
+            const getMoreInfoButton = document.getElementById("get-more-info");
+            const moreDetailsInput = document.getElementById("more-details");
+            const additionalInfoResponse = document.getElementById("more-info-response");
+            const additionalInfoText = document.getElementById("additional-info");
+
+            getMoreInfoButton.addEventListener("click", async function () {
+                const question = moreDetailsInput.value;
+                if (!question.trim()) {
+                    alert("Please enter a question to get more details.");
+                    return;
+                }
+
+                const response = await fetch("{% url 'get_more_info' %}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "X-CSRFToken": "{{ csrf_token }}"
+                    },
+                    body: new URLSearchParams({
+                        more_details: question,
+                        country: "{{ country }}"
+                    })
+                });
+
+                const data = await response.json();
+                if (data.more_details) {
+                    additionalInfoText.textContent = data.more_details;
+                    additionalInfoResponse.style.display = "block";
+                } else {
+                    alert("Error fetching additional information.");
+                }
+            });
+        });
+    </script>
+</body>
+    </html>
