@@ -5,9 +5,10 @@ module.exports = {
     entry: "./src/index.js",
     output: {
         filename: "bundle.js",
-        path: path.resolve(__dirname, "dist"),
+        path: path.resolve(__dirname, "dist"), // ✅ Change "dinpst" to "dist"
+        publicPath: "/", // ✅ Ensures correct path resolution
     },
-    mode: "development",
+    mode: "production", // ✅ Set to production for deployment
     module: {
         rules: [
             {
@@ -30,10 +31,11 @@ module.exports = {
     ],
     devServer: {
         static: {
-            directory: path.resolve(__dirname, "public"), // Ensure Webpack serves public/
+            directory: path.resolve(__dirname, "public"),
         },
         port: 3000,
         open: true,
         hot: true,
+        historyApiFallback: true, // ✅ Ensures correct routing (especially for React)
     },
 };
